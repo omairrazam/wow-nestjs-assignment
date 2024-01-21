@@ -4,7 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { Product } from './entities/product.entity';
-
+import { productInstanceToPlain } from './entities/product.entity';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -16,8 +16,10 @@ export class ProductsService {
     return this.productsRepository.save(createProductDto);
   }
 
-  findAll() {
-    return this.productsRepository.find();
+  async findAll() {
+    const products = await this.productsRepository.find();
+    // return products;
+    return products.map((product: Product) => productInstanceToPlain(product));
   }
 
   findOne(id: number) {

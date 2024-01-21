@@ -1,9 +1,10 @@
-import { Column, Entity, ObjectIdColumn, Index } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, ObjectId Index } from 'typeorm';
+import { Exclude, instanceToPlain, Expose, Transform} from 'class-transformer';
 
 @Entity()
 export class Product {
   @ObjectIdColumn()
-  id: number;
+  id: string;
 
   @Column()
   @Index({ unique: true })
@@ -14,4 +15,12 @@ export class Product {
 
   @Column()
   description: string;
+
+  constructor(partial: Partial<Product>) {
+    Object.assign(this, partial);
+  }
+}
+
+export function productInstanceToPlain(product: Product) {
+  return instanceToPlain(product, { excludePrefixes: [''] });
 }
