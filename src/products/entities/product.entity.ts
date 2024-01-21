@@ -1,4 +1,4 @@
-import { Column, Entity, ObjectIdColumn, ObjectId Index } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, Index } from 'typeorm';
 import { Exclude, instanceToPlain, Expose, Transform} from 'class-transformer';
 
 @Entity()
@@ -22,5 +22,5 @@ export class Product {
 }
 
 export function productInstanceToPlain(product: Product) {
-  return instanceToPlain(product, { excludePrefixes: [''] });
+  return instanceToPlain(product);
 }
