@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
-
+import { Product } from './products/entities/product.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,7 +14,7 @@ import { ProductsModule } from './products/products.module';
       // username: 'root',
       // password: 'root',
       database: 'test',
-      entities: [],
+      entities: [Product],
     }),
     ProductsModule,
   ],
