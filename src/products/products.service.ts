@@ -47,9 +47,6 @@ export class ProductsService {
 
   // Remove a product
   async remove(sku: string) {
-    const deleted = await this.productsRepository.delete({ sku });
-    if (!deleted) {
-      throw new NotFoundException(`Product with SKU "${sku}" not found.`);
-    }
+    await this.productsRepository.delete({ sku });
   }
 }
