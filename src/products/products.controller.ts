@@ -7,17 +7,18 @@ import {
   Param,
   Delete,
   UseGuards,
+  NotFoundException,
+  // CanActivate,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRoles } from '../shared/enums/user-roles.enum';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Add this import
-import { AuthorizationGuard } from '../auth/authorization.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('products')
-@UseGuards(JwtAuthGuard, AuthorizationGuard) // Use JwtAuthGuard here
+@UseGuards(JwtAuthGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -32,20 +33,27 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  @Get(':sku')
+  findOne(@Param('sku') sku: string) {
+    const product = this.productsService.findOne(sku);
+    if (!product) {
+      throw new NotFoundException(`Product with SKU "${sku}" not found.`);
+    }
+    return product;
   }
 
-  @Patch(':id')
+  @Patch(':sku')
   @Roles(UserRoles.Admin)
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  update(
+    @Param('sku') sku: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return this.productsService.update(sku, updateProductDto);
   }
 
-  @Delete(':id')
+  @Delete(':sku')
   @Roles(UserRoles.Admin)
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  remove(@Param('sku') sku: string) {
+    return this.productsService.remove(sku);
   }
 }
