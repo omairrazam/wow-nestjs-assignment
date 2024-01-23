@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,5 +31,9 @@ export class AuthService {
 
   async create(userDto: CreateUserDto) {
     return await this.usersService.save(userDto);
+  }
+
+  async updateRole(id: string, updateRoleDto: UpdateRoleDto) {
+    return await this.usersService.updateRole(id, updateRoleDto);
   }
 }
