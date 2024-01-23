@@ -12,7 +12,7 @@ export class AuthorizationGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles || roles.length === 0) {
-      return true; // No roles specified, allow access
+      return false;
     }
 
     const request = context.switchToHttp().getRequest();
