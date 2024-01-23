@@ -43,7 +43,6 @@ export class AuthController {
     return req.user;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('update_role/:id')
   @Roles(UserRoles.Admin)
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
