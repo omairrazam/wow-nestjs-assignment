@@ -22,12 +22,12 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @Roles(UserRoles.Admin)
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
 
   @Get()
-  @Roles(UserRoles.Admin)
   findAll() {
     return this.productsService.findAll();
   }
@@ -38,11 +38,13 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @Roles(UserRoles.Admin)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
+  @Roles(UserRoles.Admin)
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
   }
