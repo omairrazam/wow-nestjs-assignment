@@ -1,9 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRoles } from '../shared/enums/user-roles.enum';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Add this import
+import { AuthorizationGuard } from '../auth/authorization.guard';
 
 @Controller('products')
+@UseGuards(JwtAuthGuard, AuthorizationGuard) // Use JwtAuthGuard here
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -13,6 +27,7 @@ export class ProductsController {
   }
 
   @Get()
+  @Roles(UserRoles.Admin)
   findAll() {
     return this.productsService.findAll();
   }
