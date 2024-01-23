@@ -9,6 +9,7 @@ import {
   Request,
   UseGuards,
   Logger,
+  Param,
 } from '@nestjs/common';
 // import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -43,11 +44,10 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('update_role')
+  @Patch('update_role/:id')
   @Roles(UserRoles.Admin)
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  updateRole(@Body() updateRoleDto: UpdateRoleDto, @Request() req) {
-    this.logger.log(`req ${req.user.id}`);
-    return this.authService.updateRole(req.user.id, updateRoleDto);
+  updateRole( @Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto, @Request() req) {
+    return this.authService.updateRole(id, updateRoleDto);
   }
 }
