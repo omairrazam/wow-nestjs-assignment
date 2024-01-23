@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   NotFoundException,
+  Logger
   // CanActivate,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -20,6 +21,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('products')
 @UseGuards(JwtAuthGuard)
 export class ProductsController {
+  private readonly logger = new Logger('ProductsController');
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
@@ -49,6 +51,7 @@ export class ProductsController {
     @Param('sku') sku: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
+    this.logger.log(`Inside product update for ${sku}`);
     return this.productsService.update(sku, updateProductDto);
   }
 
