@@ -29,6 +29,7 @@ export class ProductsController {
   }
 
   @Get()
+  @Roles(UserRoles.Admin, UserRoles.Guest)
   findAll() {
     return this.productsService.findAll();
   }
